@@ -3,8 +3,14 @@ import axios from 'axios'
 const API_BASE_URL = import.meta.env.VITE_API_URL 
   ? `${import.meta.env.VITE_API_URL}/api` 
   : import.meta.env.PROD 
-    ? 'https://experts15.in/api' 
+    ? 'https://experts15backend.onrender.com/api' 
     : 'http://localhost:5000/api'
+
+console.log('API Configuration:', {
+  VITE_API_URL: import.meta.env.VITE_API_URL,
+  PROD: import.meta.env.PROD,
+  API_BASE_URL
+})
 
 const api = axios.create({
   baseURL: API_BASE_URL,

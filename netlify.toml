@@ -1,0 +1,13 @@
+[build]
+  base = "frontend"
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  VITE_API_URL = "https://experts15backend.onrender.com"
+  VITE_RAZORPAY_KEY_ID = "rzp_test_RfzCjbS5iBMfVc"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
