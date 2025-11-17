@@ -250,6 +250,33 @@ const TestCreationWorkflow = ({ isOpen, onClose, onSuccess }) => {
                   <p className="mt-2 text-gray-600">Processing PDF...</p>
                 </div>
               )}
+              
+              {questions.length > 0 && (
+                <div className="mt-6 border rounded-lg p-4 bg-gray-50">
+                  <h4 className="font-medium text-gray-900 mb-3">Extracted Questions ({questions.length})</h4>
+                  <div className="max-h-60 overflow-y-auto space-y-2">
+                    {questions.slice(0, 5).map((q, index) => (
+                      <div key={index} className="bg-white p-3 rounded border text-sm">
+                        <div className="font-medium">Q{q.qno}: {q.text.substring(0, 100)}...</div>
+                        <div className="text-gray-600 mt-1">
+                          Subject: {q.subject} | Options: {q.options.length}
+                        </div>
+                      </div>
+                    ))}
+                    {questions.length > 5 && (
+                      <div className="text-center text-gray-500 text-sm">
+                        ... and {questions.length - 5} more questions
+                      </div>
+                    )}
+                  </div>
+                  <button
+                    onClick={() => setCurrentStep(3)}
+                    className="mt-3 w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700"
+                  >
+                    Continue to Answer Key
+                  </button>
+                </div>
+              )}
             </div>
           )}
 
@@ -285,13 +312,23 @@ const TestCreationWorkflow = ({ isOpen, onClose, onSuccess }) => {
                   <p className="mt-2 text-gray-600">Processing answer key...</p>
                 </div>
               )}
+              
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setCurrentStep(4)}
+                  className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+                  disabled={questions.length === 0}
+                >
+                  Review Questions
+                </button>
+              </div>
             </div>
           )}
 
           {/* Step 4: Review & Publish */}
           {currentStep === 4 && (
             <div className="space-y-6">
-              <h3 className="text-xl font-semibold">Review & Publish</h3>
+              <h3 className="text-xl font-semibold">Review Questions & Publish</h3>
               
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
                 <h4 className="font-semibold text-blue-900 mb-4">Test Summary</h4>
@@ -301,16 +338,49 @@ const TestCreationWorkflow = ({ isOpen, onClose, onSuccess }) => {
                   <div><span className="font-medium">Duration:</span> {testData.durationMins} minutes</div>
                   <div><span className="font-medium">Questions:</span> {questions.length}</div>
                   <div><span className="font-medium">Price:</span> {testData.isPaid ? `₹${testData.price}` : 'FREE'}</div>
-                  <div><span className="font-medium">Status:</span> Ready to publish</div>
                 </div>
               </div>
 
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+              {questions.length > 0 && (
+                <div className="border rounded-lg p-4">
+                  <h4 className="font-medium text-gray-900 mb-3">Questions Preview</h4>
+                  <div className="max-h-96 overflow-y-auto space-y-4">
+                    {questions.map((q, index) => (
+                      <div key={index} className="bg-gray-50 p-4 rounded border">
+                        <div className="flex justify-between items-start mb-2">
+                          <div className="font-medium text-sm">Q{q.qno} - {q.subject}</div>
+                          <div className="text-xs text-gray-500">
+                            {q.correctOptionIndex !== undefined ? '✅ Answer Set' : '❌ No Answer'}
+                          </div>
+                        </div>
+                        <div className="text-sm text-gray-700 mb-2">{q.text}</div>
+                        {q.options.length > 0 && (
+                          <div className="text-xs text-gray-600">
+                            Options: {q.options.map((opt, i) => 
+                              `${String.fromCharCode(65 + i)}) ${opt.substring(0, 30)}...`
+                            ).join(' | ')}
+                          </div>
+                        )}
+                        {q.correctOptionIndex !== undefined && (
+                          <div className="text-xs text-green-600 mt-1">
+                            Correct Answer: {q.options.length > 0 ? 
+                              String.fromCharCode(65 + q.correctOptionIndex) : 
+                              q.correctOptionIndex
+                            }
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                 <div className="flex items-center">
-                  <div className="text-green-600 mr-3">🎉</div>
+                  <div className="text-yellow-600 mr-3">⚠️</div>
                   <div>
-                    <h4 className="font-medium text-green-900">Ready to Publish!</h4>
-                    <p className="text-green-700 text-sm">All steps completed. Your test is ready to be published.</p>
+                    <h4 className="font-medium text-yellow-900">Review Before Publishing</h4>
+                    <p className="text-yellow-700 text-sm">Please verify all questions and answers are correct before publishing.</p>
                   </div>
                 </div>
               </div>

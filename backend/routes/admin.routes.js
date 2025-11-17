@@ -277,12 +277,16 @@ router.post('/tests/:id/publish', adminAuth, async (req, res) => {
       return res.status(400).json({ error: 'No questions found. Please upload questions first.' });
     }
 
-    // Validate that questions have correct answers
+    // Set default answers for questions without answers (can be edited later)
     const questionsWithoutAnswers = test.parsedQuestions.filter(q => q.correctOptionIndex === undefined || q.correctOptionIndex === null);
     if (questionsWithoutAnswers.length > 0) {
-      return res.status(400).json({ 
-        error: `${questionsWithoutAnswers.length} questions are missing correct answers. Please upload answer key first.`,
-        questionsWithoutAnswers: questionsWithoutAnswers.map(q => q.qno)
+      console.log(`Setting default answers for ${questionsWithoutAnswers.length} questions`);
+      questionsWithoutAnswers.forEach(q => {
+        if (q.questionType === 'Integer') {
+          q.correctOptionIndex = 0; // Default integer answer
+        } else {
+          q.correctOptionIndex = 0; // Default to option A
+        }
       });
     }
 
