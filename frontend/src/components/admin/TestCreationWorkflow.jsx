@@ -29,18 +29,40 @@ const TestCreationWorkflow = ({ isOpen, onClose, onSuccess }) => {
   ]
 
   const handleCreateTest = async () => {
+    if (!testData.title || !testData.description) {
+      toast.error('Please fill in title and description')
+      return
+    }
+    
     try {
+      console.log('Creating test with data:', testData)
       const response = await api.post('/admin/tests', testData)
-      setCreatedTest(response.data.test)
-      setCurrentStep(2)
-      toast.success('Test created successfully!')
+      
+      if (response.data.test && response.data.test._id) {
+        setCreatedTest(response.data.test)
+        setCurrentStep(2)
+        toast.success('Test created successfully!')
+        console.log('Test created:', response.data.test._id)
+      } else {
+        throw new Error('Invalid response from server')
+      }
     } catch (error) {
-      toast.error('Error creating test')
+      console.error('Create test error:', error)
+      const errorMessage = error.response?.data?.error || error.response?.data?.message || 'Error creating test'
+      toast.error(errorMessage)
     }
   }
 
   const handleFileUpload = async (file, type) => {
-    if (!file || !createdTest) return
+    if (!file) {
+      toast.error('Please select a file')
+      return
+    }
+    
+    if (!createdTest || !createdTest._id) {
+      toast.error('No test found. Please create a test first.')
+      return
+    }
 
     const formData = new FormData()
     formData.append(type === 'questions' ? 'questionPdf' : 'answerKeyPdf', file)
@@ -48,20 +70,24 @@ const TestCreationWorkflow = ({ isOpen, onClose, onSuccess }) => {
     setUploading(true)
     try {
       const endpoint = type === 'questions' ? 'upload-questions' : 'upload-answerkey'
+      console.log(`Uploading ${type} to test:`, createdTest._id)
+      
       const response = await api.post(`/admin/tests/${createdTest._id}/${endpoint}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
       
       if (type === 'questions') {
         setQuestions(response.data.questions || [])
-        setCurrentStep(3)
+        toast.success(`${response.data.questionsCount} questions extracted successfully!`)
       } else {
+        toast.success('Answer key uploaded successfully!')
         setCurrentStep(4)
       }
       
-      toast.success(response.data.message)
     } catch (error) {
-      toast.error(`Error uploading ${type}`)
+      console.error(`Upload ${type} error:`, error)
+      const errorMessage = error.response?.data?.error || error.response?.data?.message || `Error uploading ${type}`
+      toast.error(errorMessage)
     } finally {
       setUploading(false)
     }
