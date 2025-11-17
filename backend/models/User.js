@@ -73,8 +73,7 @@ const userSchema = new mongoose.Schema({
   totalStudyTime: {
     type: Number,
     default: 0
-  }
-},
+  },
   preferences: {
     notifications: {
       email: {
