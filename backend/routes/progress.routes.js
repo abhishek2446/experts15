@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const UserProgress = require('../models/UserProgress');
 const User = require('../models/User');
-const auth = require('../middleware/auth');
+const { auth } = require('../middleware/auth');
 
 // Get user dashboard data with progress
 router.get('/dashboard', auth, async (req, res) => {
