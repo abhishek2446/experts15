@@ -21,6 +21,9 @@ import AdminPanel from './pages/AdminPanel'
 import DemoTest from './pages/DemoTest'
 import Subscription from './pages/Subscription'
 import PaymentTest from './pages/PaymentTest'
+import Reviews from './pages/Reviews'
+import Profile from './pages/Profile'
+import AdvancedAnalytics from './pages/AdvancedAnalytics'
 import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
@@ -49,6 +52,22 @@ function App() {
                       element={
                         <ProtectedRoute>
                           <Subscription />
+                        </ProtectedRoute>
+                      } 
+                    />
+                    <Route 
+                      path="/reviews" 
+                      element={
+                        <ProtectedRoute>
+                          <Reviews />
+                        </ProtectedRoute>
+                      } 
+                    />
+                    <Route 
+                      path="/profile" 
+                      element={
+                        <ProtectedRoute>
+                          <Profile />
                         </ProtectedRoute>
                       } 
                     />
@@ -97,6 +116,14 @@ function App() {
                       element={
                         <ProtectedRoute adminOnly>
                           <AdminPanel />
+                        </ProtectedRoute>
+                      } 
+                    />
+                    <Route 
+                      path="/advanced-analytics" 
+                      element={
+                        <ProtectedRoute adminOnly>
+                          <AdvancedAnalytics />
                         </ProtectedRoute>
                       } 
                     />

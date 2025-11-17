@@ -125,57 +125,62 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen pt-20 pb-8 professional-bg">
+    <div className="min-h-screen pt-16 sm:pt-20 pb-6 sm:pb-8 professional-bg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Welcome Section */}
-        <div className="hero-bg rounded-3xl shadow-2xl p-10 mb-10 text-white relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20 animate-float"></div>
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full -ml-16 -mb-16 animate-float" style={{animationDelay: '2s'}}></div>
-          <div className="absolute top-1/2 right-1/4 w-16 h-16 bg-white/5 rounded-full animate-pulse-slow"></div>
+        {/* Welcome Section - Mobile Responsive */}
+        <div className="hero-bg rounded-2xl sm:rounded-3xl shadow-2xl p-4 sm:p-6 md:p-10 mb-6 sm:mb-10 text-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-20 h-20 sm:w-40 sm:h-40 bg-white/10 rounded-full -mr-10 sm:-mr-20 -mt-10 sm:-mt-20 animate-float"></div>
+          <div className="absolute bottom-0 left-0 w-16 h-16 sm:w-32 sm:h-32 bg-white/10 rounded-full -ml-8 sm:-ml-16 -mb-8 sm:-mb-16 animate-float" style={{animationDelay: '2s'}}></div>
+          <div className="absolute top-1/2 right-1/4 w-8 h-8 sm:w-16 sm:h-16 bg-white/5 rounded-full animate-pulse-slow"></div>
           <div className="relative z-10">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-4xl md:text-5xl font-black mb-4 text-shadow animate-fade-in">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+              <div className="flex-1 min-w-0">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-3 sm:mb-4 text-shadow animate-fade-in break-words">
                   Welcome back, {user?.name}! 🚀
                 </h1>
-                <p className="text-white/90 text-xl md:text-2xl mb-6 font-medium text-shadow animate-slide-up">
+                <p className="text-white/90 text-base sm:text-lg md:text-xl lg:text-2xl mb-4 sm:mb-6 font-medium text-shadow animate-slide-up">
                   Ready to continue your JEE preparation? Let's achieve your goals together.
                 </p>
-                <div className="flex items-center space-x-6 text-sm">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 text-sm">
                   <div className="flex items-center">
-                    <span className="text-2xl mr-2">🔥</span>
+                    <span className="text-xl sm:text-2xl mr-2">🔥</span>
                     <div>
-                      <div className="font-bold">{studyStreak} Day Streak</div>
-                      <div className="text-purple-200">Keep it up!</div>
+                      <div className="font-bold text-sm sm:text-base">{studyStreak} Day Streak</div>
+                      <div className="text-purple-200 text-xs sm:text-sm">Keep it up!</div>
                     </div>
                   </div>
                   <div className="flex items-center">
-                    <span className="text-2xl mr-2">⏰</span>
+                    <span className="text-xl sm:text-2xl mr-2">⏰</span>
                     <div>
-                      <div className="font-bold">{Math.floor(todayStudyTime / 60)}h {todayStudyTime % 60}m</div>
-                      <div className="text-purple-200">Today's study</div>
+                      <div className="font-bold text-sm sm:text-base">{Math.floor(todayStudyTime / 60)}h {todayStudyTime % 60}m</div>
+                      <div className="text-purple-200 text-xs sm:text-sm">Today's study</div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="hidden md:block">
+              <div className="hidden lg:block shrink-0">
                 <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
-                  <div className="text-2xl font-bold">{currentTime.toLocaleDateString('en-US', { weekday: 'long' })}</div>
-                  <div className="text-purple-100">{currentTime.toLocaleDateString()}</div>
-                  <div className="text-sm text-purple-200 mt-2">{currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                  <div className="text-xl lg:text-2xl font-bold">{currentTime.toLocaleDateString('en-US', { weekday: 'long' })}</div>
+                  <div className="text-purple-100 text-sm lg:text-base">{currentTime.toLocaleDateString()}</div>
+                  <div className="text-xs lg:text-sm text-purple-200 mt-2">{currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
                 </div>
+              </div>
+              {/* Mobile Time Display */}
+              <div className="lg:hidden bg-white/20 backdrop-blur-sm rounded-lg p-3 text-center">
+                <div className="text-sm font-bold">{currentTime.toLocaleDateString('en-US', { weekday: 'short' })} • {currentTime.toLocaleDateString()}</div>
+                <div className="text-xs text-purple-200 mt-1">{currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Demo Test CTA */}
-        <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl shadow-xl p-8 mb-8 text-white">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-bold mb-2">🚀 Try Our Free Demo Test!</h2>
-              <p className="text-green-100 mb-4">Experience our realistic CBT interface with 10 sample questions</p>
-              <div className="flex items-center space-x-4 text-sm">
+        {/* Demo Test CTA - Mobile Responsive */}
+        <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 md:p-8 mb-6 sm:mb-8 text-white">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex-1 min-w-0">
+              <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 break-words">🚀 Try Our Free Demo Test!</h2>
+              <p className="text-green-100 mb-3 sm:mb-4 text-sm sm:text-base">Experience our realistic CBT interface with 10 sample questions</p>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm">
                 <span className="flex items-center"><span className="mr-1">⏱️</span> 30 minutes</span>
                 <span className="flex items-center"><span className="mr-1">📝</span> 10 questions</span>
                 <span className="flex items-center"><span className="mr-1">🎯</span> Physics, Chemistry, Math</span>
@@ -183,16 +188,16 @@ const Dashboard = () => {
             </div>
             <button 
               onClick={handleDemoTest}
-              className="bg-white text-green-600 px-6 py-3 rounded-xl font-bold hover:bg-green-50 transition-colors shadow-lg"
+              className="bg-white text-green-600 px-4 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl font-bold hover:bg-green-50 transition-colors shadow-lg text-sm sm:text-base shrink-0 w-full sm:w-auto"
             >
               Start Demo Test →
             </button>
           </div>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="card p-6 border-l-4 border-indigo-500">
+        {/* Stats Cards - Mobile Responsive */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <div className="card p-4 sm:p-6 border-l-4 border-indigo-500 hover:shadow-lg transition-shadow duration-200">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600 mb-1">Enrolled Tests</p>
@@ -531,15 +536,39 @@ const Dashboard = () => {
                 </div>
               </button>
               
-              <Link to="/contact" className="flex items-center p-3 bg-purple-50 rounded-xl hover:bg-purple-100 transition-colors">
-                <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center mr-3">
+              <Link to="/reviews" className="flex items-center p-3 bg-yellow-50 rounded-xl hover:bg-yellow-100 transition-colors">
+                <div className="w-10 h-10 bg-yellow-600 rounded-full flex items-center justify-center mr-3">
                   <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                   </svg>
                 </div>
                 <div>
-                  <div className="font-semibold text-gray-900">Get Help</div>
-                  <div className="text-sm text-gray-600">Contact support</div>
+                  <div className="font-semibold text-gray-900">Write Review</div>
+                  <div className="text-sm text-gray-600">Share your experience</div>
+                </div>
+              </Link>
+              
+              <Link to="/profile" className="flex items-center p-3 bg-purple-50 rounded-xl hover:bg-purple-100 transition-colors">
+                <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center mr-3">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+                <div>
+                  <div className="font-semibold text-gray-900">My Profile</div>
+                  <div className="text-sm text-gray-600">Update your details</div>
+                </div>
+              </Link>
+              
+              <Link to="/reviews" className="flex items-center p-3 bg-orange-50 rounded-xl hover:bg-orange-100 transition-colors">
+                <div className="w-10 h-10 bg-orange-600 rounded-full flex items-center justify-center mr-3">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                  </svg>
+                </div>
+                <div>
+                  <div className="font-semibold text-gray-900">Write Review</div>
+                  <div className="text-sm text-gray-600">Share your experience</div>
                 </div>
               </Link>
             </div>

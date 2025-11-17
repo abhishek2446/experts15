@@ -8,4 +8,5 @@
   status = 200
 
 [build.environment]
-  NODE_VERSION = "18"
+  VITE_API_URL = "https://experts15-backend.onrender.com"
+  VITE_RAZORPAY_KEY_ID = "rzp_test_RfzCjbS5iBMfVc"

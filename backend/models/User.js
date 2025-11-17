@@ -28,7 +28,17 @@ const userSchema = new mongoose.Schema({
   },
   profile: {
     phone: String,
-    institute: String
+    institute: String,
+    city: String,
+    state: String,
+    targetExam: {
+      type: String,
+      enum: ['JEE Main', 'JEE Advanced', 'Both'],
+      default: 'JEE Main'
+    },
+    targetYear: String,
+    profileImage: String,
+    bio: String
   },
   enrollments: [{
     type: mongoose.Schema.Types.ObjectId,

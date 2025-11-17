@@ -589,6 +589,44 @@ router.post('/notifications/send', adminAuth, async (req, res) => {
   }
 })
 
+// POST /api/admin/debug/test-creation - Debug test creation
+router.post('/debug/test-creation', adminAuth, async (req, res) => {
+  try {
+    console.log('Debug: Test creation request received');
+    console.log('Request body:', req.body);
+    
+    const testData = {
+      title: 'Debug Test',
+      description: 'Test for debugging',
+      examType: 'main',
+      subjects: ['Physics', 'Chemistry', 'Mathematics'],
+      durationMins: 180,
+      totalMarks: 300,
+      totalQuestions: 75,
+      difficulty: 'Mixed',
+      isPaid: false,
+      price: 0,
+      visibility: 'public',
+      createdBy: req.user._id,
+      status: 'draft'
+    };
+    
+    const test = new Test(testData);
+    await test.save();
+    
+    console.log('Debug: Test created successfully:', test._id);
+    
+    res.json({
+      success: true,
+      message: 'Debug test created successfully',
+      test: test
+    });
+  } catch (error) {
+    console.error('Debug test creation error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // GET /api/admin/analytics - Basic analytics
 router.get('/analytics', adminAuth, async (req, res) => {
   try {

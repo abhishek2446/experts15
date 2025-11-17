@@ -31,27 +31,33 @@ const extractQuestions = (text) => {
   let questionNumber = 0;
   let currentSubject = 'Physics';
   
+  console.log('PDF Text Preview:', text.substring(0, 500));
+  console.log('Total lines:', lines.length);
+  
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     
     // Check for subject headers
-    const subjectMatch = line.match(/^(PHYSICS|CHEMISTRY|MATHEMATICS|MATH|MATHS)/i);
+    const subjectMatch = line.match(/^(PHYSICS|CHEMISTRY|MATHEMATICS|MATH|MATHS|SECTION\s*[A-C])/i);
     if (subjectMatch) {
       const subject = subjectMatch[1].toLowerCase();
-      if (subject === 'physics') currentSubject = 'Physics';
-      else if (subject === 'chemistry') currentSubject = 'Chemistry';
-      else if (subject.includes('math')) currentSubject = 'Mathematics';
+      if (subject === 'physics' || subject === 'section a') currentSubject = 'Physics';
+      else if (subject === 'chemistry' || subject === 'section b') currentSubject = 'Chemistry';
+      else if (subject.includes('math') || subject === 'section c') currentSubject = 'Mathematics';
+      console.log('Found subject:', currentSubject);
       continue;
     }
     
     // Enhanced question pattern matching
     const questionMatch = line.match(/^(?:Q\.?\s*)?(\d{1,3})[\.\)]\s*(.+)/) || 
-                         line.match(/^Question\s+(\d{1,3})[\.:]?\s*(.+)/i);
+                         line.match(/^Question\s+(\d{1,3})[\.:]?\s*(.+)/i) ||
+                         line.match(/^(\d{1,3})[\.\)]\s+(.+)/) ||
+                         line.match(/^(\d{1,3})\s*[-–]\s*(.+)/);
     
     if (questionMatch) {
       if (currentQuestion) {
         if (!currentQuestion.subject) {
-          const questionsPerSubject = Math.ceil(questions.length / 3);
+          const questionsPerSubject = Math.ceil(75 / 3);
           if (currentQuestion.qno <= questionsPerSubject) {
             currentQuestion.subject = 'Physics';
           } else if (currentQuestion.qno <= questionsPerSubject * 2) {
@@ -74,12 +80,15 @@ const extractQuestions = (text) => {
         questionType: 'MCQ',
         difficulty: 'Medium'
       };
+      console.log(`Found question ${questionNumber}`);
       continue;
     }
     
     // Enhanced option pattern matching
     const optionMatch = line.match(/^[(\[]?([A-Da-d])[)\]\.]\s*(.+)/) ||
-                       line.match(/^\(?([A-Da-d])\)?\s*[\-\.]?\s*(.+)/);
+                       line.match(/^\(?([A-Da-d])\)?\s*[\-\.]?\s*(.+)/) ||
+                       line.match(/^([A-Da-d])\s*[\)\.]\s*(.+)/) ||
+                       line.match(/^([A-Da-d])\s+(.+)/);
     
     if (optionMatch && currentQuestion) {
       currentQuestion.options.push(optionMatch[2]);
@@ -88,13 +97,15 @@ const extractQuestions = (text) => {
     
     // Check for integer type questions
     if (currentQuestion && currentQuestion.options.length === 0 && 
-        line.match(/answer|result|value/i)) {
+        (line.match(/answer|result|value|integer/i) || line.match(/\d+/))) {
       currentQuestion.questionType = 'Integer';
     }
     
     // Continuation of question text
-    if (currentQuestion && !optionMatch && !line.match(/^[A-Da-d][)\]\.]/) && 
-        line.length > 10) {
+    if (currentQuestion && !optionMatch && 
+        !line.match(/^[A-Da-d][)\]\.]/) && 
+        !line.match(/^\d+[\.\)]/) &&
+        line.length > 5 && line.length < 200) {
       currentQuestion.text += ' ' + line;
     }
   }
@@ -106,12 +117,15 @@ const extractQuestions = (text) => {
     questions.push(currentQuestion);
   }
   
-  return questions.map(q => ({
+  const processedQuestions = questions.map(q => ({
     ...q,
     text: q.text.replace(/\s+/g, ' ').trim(),
     options: q.options.map(opt => opt.replace(/\s+/g, ' ').trim()),
     questionType: q.options.length === 0 ? 'Integer' : 'MCQ'
   })).filter(q => q.text.length > 10);
+  
+  console.log(`Extracted ${processedQuestions.length} questions`);
+  return processedQuestions;
 };
 
 const parseAnswerKeyPDF = async (filePath) => {
@@ -138,11 +152,15 @@ const extractAnswers = (text) => {
   const answers = {};
   const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
   
+  console.log('Answer key text preview:', text.substring(0, 500));
+  
   for (const line of lines) {
     // Enhanced answer pattern matching
     const answerMatch = line.match(/(\d{1,3})[\.\):\s]+([A-Da-d]|\d+)/i) ||
                        line.match(/Q\.?\s*(\d{1,3})[\.:\s]+([A-Da-d]|\d+)/i) ||
-                       line.match(/Question\s+(\d{1,3})[\.:\s]+([A-Da-d]|\d+)/i);
+                       line.match(/Question\s+(\d{1,3})[\.:\s]+([A-Da-d]|\d+)/i) ||
+                       line.match(/(\d{1,3})\s*[-–]\s*([A-Da-d]|\d+)/i) ||
+                       line.match(/(\d{1,3})\s+([A-Da-d]|\d+)/i);
     
     if (answerMatch) {
       const questionNum = parseInt(answerMatch[1]);
@@ -151,24 +169,15 @@ const extractAnswers = (text) => {
       if (answer.match(/[A-D]/)) {
         const optionIndex = answer.charCodeAt(0) - 65;
         answers[questionNum] = optionIndex;
+        console.log(`Answer ${questionNum}: ${answer} (index: ${optionIndex})`);
       } else if (answer.match(/\d+/)) {
         answers[questionNum] = parseInt(answer);
-      }
-    }
-    
-    const altMatch = line.match(/(\d{1,3})\s*[-–]\s*([A-Da-d]|\d+)/i);
-    if (altMatch) {
-      const questionNum = parseInt(altMatch[1]);
-      const answer = altMatch[2].toUpperCase();
-      
-      if (answer.match(/[A-D]/)) {
-        answers[questionNum] = answer.charCodeAt(0) - 65;
-      } else if (answer.match(/\d+/)) {
-        answers[questionNum] = parseInt(answer);
+        console.log(`Answer ${questionNum}: ${answer} (integer)`);
       }
     }
   }
   
+  console.log(`Extracted ${Object.keys(answers).length} answers`);
   return answers;
 };
 

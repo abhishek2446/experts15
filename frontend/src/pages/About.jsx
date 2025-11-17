@@ -1,27 +1,27 @@
 import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
 
 const About = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   const teamMembers = [
     {
-      name: "Dr. Rajesh Kumar",
-      role: "Founder & CEO",
-      education: "IIT Delhi, PhD Physics",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
-      description: "15+ years in JEE coaching with 95% success rate"
+      name: "Ankit Kumar",
+      role: "Founder & Physics/Chemistry Expert",
+      education: "Expert in Physics & Chemistry",
+      contact: "+91 85289 43187",
+      image: "/api/placeholder/300/300",
+      description: "Passionate educator with deep expertise in Physics and Chemistry, dedicated to helping students excel in JEE"
     },
     {
-      name: "Prof. Anita Sharma",
-      role: "Head of Mathematics",
-      education: "IIT Bombay, M.Tech",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face",
-      description: "Expert in advanced mathematics and problem solving"
-    },
-    {
-      name: "Dr. Vikram Singh",
-      role: "Chemistry Expert",
-      education: "IIT Kanpur, PhD Chemistry",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face",
-      description: "Specialized in organic and physical chemistry"
+      name: "Abhishek Shukla",
+      role: "Co-Founder & Mathematics Expert",
+      education: "Expert in Mathematics",
+      contact: "+91 77528 42084",
+      image: "/api/placeholder/300/300",
+      description: "Mathematics specialist with proven track record in helping students master complex mathematical concepts"
     }
   ]
 
@@ -42,7 +42,7 @@ const About = () => {
               About Experts15
             </h1>
             <p className="text-xl md:text-2xl max-w-3xl mx-auto animate-slide-up font-semibold text-shadow">
-              Empowering JEE aspirants with expert guidance and cutting-edge technology since 2019
+              Empowering JEE aspirants with expert guidance and cutting-edge technology since 2025
             </p>
           </div>
         </div>
@@ -121,23 +121,24 @@ const About = () => {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Meet Our Expert Team</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Our team consists of IIT alumni, experienced educators, and industry experts 
-              dedicated to your JEE success
+              Founded and led by passionate educators who understand the challenges of JEE preparation 
+              and are committed to your success
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
             {teamMembers.map((member, index) => (
-              <div key={index} className="card p-6 text-center hover:scale-105 transition-transform duration-300">
-                <img 
-                  src={member.image} 
-                  alt={member.name}
-                  className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
-                />
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{member.name}</h3>
-                <p className="text-primary-600 font-semibold mb-2">{member.role}</p>
-                <p className="text-sm text-gray-500 mb-3">{member.education}</p>
-                <p className="text-gray-600">{member.description}</p>
+              <div key={index} className="card p-8 text-center hover:scale-105 transition-transform duration-300 bg-gradient-to-br from-white to-blue-50">
+                <div className="w-32 h-32 rounded-full mx-auto mb-6 bg-gradient-to-br from-blue-100 to-indigo-200 flex items-center justify-center border-4 border-white shadow-lg">
+                  <div className="text-4xl font-bold text-blue-600">{member.name.split(' ').map(n => n[0]).join('')}</div>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">{member.name}</h3>
+                <p className="text-blue-600 font-semibold mb-2 text-lg">{member.role}</p>
+                <p className="text-sm text-gray-500 mb-2">{member.education}</p>
+                <div className="bg-blue-50 rounded-lg p-3 mb-4">
+                  <p className="text-blue-700 font-semibold text-sm">📞 {member.contact}</p>
+                </div>
+                <p className="text-gray-600 leading-relaxed">{member.description}</p>
               </div>
             ))}
           </div>
@@ -152,28 +153,28 @@ const About = () => {
               <h3 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h3>
               <div className="space-y-4 text-gray-600">
                 <p>
-                  Founded in 2019 by a group of IIT alumni who were passionate about education, 
-                  Experts15 started with a simple idea: make quality JEE preparation accessible to everyone.
+                  Founded by passionate educators Ankit Kumar and Abhishek Shukla, 
+                  Experts15 was born from a vision to revolutionize JEE preparation through technology and expert guidance.
                 </p>
                 <p>
-                  We noticed that many talented students from smaller cities and towns lacked access 
-                  to quality coaching institutes. This inspired us to create a platform that could 
-                  deliver the same level of education that students in metro cities receive.
+                  With deep expertise in Physics, Chemistry, and Mathematics, our founders recognized 
+                  the need for a comprehensive platform that combines subject mastery with innovative 
+                  testing methodologies to help students excel in JEE.
                 </p>
                 <p>
-                  Today, we're proud to have helped over 50,000 students in their JEE journey, 
-                  with many of them securing seats in top IITs and NITs across India.
+                  Developed by <a href="https://abhinova.com" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:text-primary-700 font-semibold underline">abhinova.com</a>, our platform leverages cutting-edge technology 
+                  to provide personalized learning experiences and realistic exam simulations.
                 </p>
               </div>
             </div>
             <div className="space-y-6">
               <div className="flex items-start">
                 <div className="bg-primary-600 text-white p-3 rounded-full mr-4 mt-1">
-                  <span className="font-bold">2019</span>
+                  <span className="font-bold">2025</span>
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900">Founded Experts15</h4>
-                  <p className="text-gray-600">Started with 5 expert teachers and 100 students</p>
+                  <p className="text-gray-600">Launched by Ankit Kumar & Abhishek Shukla</p>
                 </div>
               </div>
               <div className="flex items-start">
@@ -181,8 +182,8 @@ const About = () => {
                   <span className="font-bold">2020</span>
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-900">Launched Online Platform</h4>
-                  <p className="text-gray-600">Developed our comprehensive mock test system</p>
+                  <h4 className="font-bold text-gray-900">Platform Development</h4>
+                  <p className="text-gray-600">Built by abhinova.com with advanced features</p>
                 </div>
               </div>
               <div className="flex items-start">
@@ -190,8 +191,8 @@ const About = () => {
                   <span className="font-bold">2022</span>
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-900">AI-Powered Analytics</h4>
-                  <p className="text-gray-600">Introduced personalized learning and rank prediction</p>
+                  <h4 className="font-bold text-gray-900">Expert Content Creation</h4>
+                  <p className="text-gray-600">Comprehensive question bank by subject experts</p>
                 </div>
               </div>
               <div className="flex items-start">
@@ -199,8 +200,8 @@ const About = () => {
                   <span className="font-bold">2024</span>
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-900">50,000+ Students</h4>
-                  <p className="text-gray-600">Reached milestone of helping 50,000+ JEE aspirants</p>
+                  <h4 className="font-bold text-gray-900">Growing Community</h4>
+                  <p className="text-gray-600">Helping students achieve their JEE dreams</p>
                 </div>
               </div>
             </div>

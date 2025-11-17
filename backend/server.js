@@ -18,6 +18,8 @@ const adminRoutes = require('./routes/admin.routes');
 const paymentRoutes = require('./routes/payments.routes');
 const cbtRoutes = require('./routes/cbt.routes');
 const demoRoutes = require('./routes/demo.routes');
+const reviewRoutes = require('./routes/reviews.routes');
+const profileRoutes = require('./routes/profile.routes');
 
 const app = express();
 
@@ -25,19 +27,27 @@ const app = express();
 app.use(helmet());
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://your-netlify-app.netlify.app',
+  'https://experts15.in',
+  'https://www.experts15.in',
+  'https://experts15.netlify.app',
   process.env.FRONTEND_URL
 ].filter(Boolean);
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
+      console.log('CORS blocked origin:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Rate limiting
@@ -65,10 +75,31 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/cbt', cbtRoutes);
 app.use('/api/demo', demoRoutes);
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/profile', profileRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
-  res.json({ status: 'OK', timestamp: new Date().toISOString() });
+  res.json({ 
+    status: 'OK', 
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV,
+    port: process.env.PORT
+  });
+});
+
+// API root endpoint
+app.get('/api', (req, res) => {
+  res.json({ 
+    message: 'Experts15 API is running',
+    version: '1.0.0',
+    endpoints: {
+      auth: '/api/auth',
+      tests: '/api/tests',
+      admin: '/api/admin',
+      payments: '/api/payments'
+    }
+  });
 });
 
 // Error handling

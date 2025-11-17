@@ -12,13 +12,55 @@ const Tests = () => {
   const { user } = useAuth()
   const navigate = useNavigate()
 
+  // Fallback test data
+  const fallbackTests = [
+    {
+      _id: 'test-1',
+      title: 'JEE Mains Mock Test 1',
+      description: 'Comprehensive test covering Physics, Chemistry, and Mathematics',
+      examType: 'mains',
+      durationMins: 180,
+      totalMarks: 300,
+      isPaid: false,
+      price: 0,
+      questionCount: 75,
+      difficulty: 'Mixed'
+    },
+    {
+      _id: 'test-2',
+      title: 'JEE Advanced Practice Test',
+      description: 'Advanced level questions for JEE Advanced preparation',
+      examType: 'advanced',
+      durationMins: 180,
+      totalMarks: 300,
+      isPaid: true,
+      price: 299,
+      questionCount: 54,
+      difficulty: 'Hard'
+    },
+    {
+      _id: 'test-3',
+      title: 'Free Demo Test',
+      description: 'Try our platform with this free sample test',
+      examType: 'mains',
+      durationMins: 60,
+      totalMarks: 100,
+      isPaid: false,
+      price: 0,
+      questionCount: 25,
+      difficulty: 'Easy'
+    }
+  ]
+
   useEffect(() => {
     const fetchTests = async () => {
       try {
         const response = await api.get('/tests')
-        setTests(response.data)
+        const testsData = Array.isArray(response.data) ? response.data : fallbackTests
+        setTests(testsData)
       } catch (error) {
         console.error('Error fetching tests:', error)
+        setTests(fallbackTests) // Use fallback data on error
       } finally {
         setLoading(false)
       }

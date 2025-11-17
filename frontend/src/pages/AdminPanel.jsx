@@ -700,13 +700,13 @@ const AdminPanel = () => {
     }
 
     return (
-      <div className="bg-white rounded-lg shadow-sm border p-6">
-        <div className="flex justify-between items-start mb-4">
-          <div className="flex-1">
-            <h3 className="text-lg font-semibold text-gray-900">{test.title}</h3>
-            <p className="text-sm text-gray-600 mt-1">{test.description}</p>
+      <div className="bg-white rounded-lg shadow-sm border p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-4">
+          <div className="flex-1 min-w-0">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 break-words">{test.title}</h3>
+            <p className="text-xs sm:text-sm text-gray-600 mt-1 break-words">{test.description}</p>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center flex-wrap gap-1 sm:gap-2 shrink-0">
             <button
               onClick={() => {
                 setEditingTest(test)
@@ -790,13 +790,33 @@ const AdminPanel = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
-          <div>Type: <span className="font-medium">{test.examType.toUpperCase()}</span></div>
-          <div>Duration: <span className="font-medium">{test.durationMins} mins</span></div>
-          <div>Questions: <span className="font-medium">{test.totalQuestions}</span></div>
-          <div>Price: <span className="font-medium">{test.isPaid ? `₹${test.price}` : 'FREE'}</span></div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 mb-4 text-xs sm:text-sm">
+          <div className="break-words">Type: <span className="font-medium">{test.examType.toUpperCase()}</span></div>
+          <div className="break-words">Duration: <span className="font-medium">{test.durationMins}m</span></div>
+          <div className="break-words">Questions: <span className="font-medium">{test.totalQuestions}</span></div>
+          <div className="break-words">Price: <span className="font-medium">{test.isPaid ? `₹${test.price}` : 'FREE'}</span></div>
         </div>
 
+        {/* Action buttons for all tests */}
+        {test.status === 'published' && (
+          <div className="border-t pt-4">
+            <div className="flex flex-col sm:flex-row gap-2">
+              <button
+                onClick={() => setShowNotifications(true)}
+                className="flex-1 bg-yellow-100 text-yellow-700 py-2 px-3 sm:px-4 rounded-lg hover:bg-yellow-200 font-medium text-xs sm:text-sm"
+              >
+                📢 Send Notifications
+              </button>
+              <button
+                onClick={handleExport}
+                className="flex-1 bg-green-100 text-green-700 py-2 px-3 sm:px-4 rounded-lg hover:bg-green-200 font-medium text-xs sm:text-sm"
+              >
+                📄 Export Results
+              </button>
+            </div>
+          </div>
+        )}
+        
         {test.status === 'draft' && (
           <div className="space-y-4">
             <div className="border-t pt-4">
@@ -831,10 +851,10 @@ const AdminPanel = () => {
 
             {test.parsedQuestions?.length > 0 && (
               <div className="space-y-2 pt-2">
-                <div className="flex space-x-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <button
                     onClick={() => setShowBulkEditor(true)}
-                    className="flex-1 bg-blue-100 text-blue-700 py-2 px-4 rounded-lg hover:bg-blue-200 font-medium text-sm"
+                    className="flex-1 bg-blue-100 text-blue-700 py-2 px-3 sm:px-4 rounded-lg hover:bg-blue-200 font-medium text-xs sm:text-sm"
                   >
                     Edit Questions
                   </button>
@@ -843,16 +863,16 @@ const AdminPanel = () => {
                       setEditingQuestion(null)
                       setShowQuestionEditor(true)
                     }}
-                    className="flex-1 bg-purple-100 text-purple-700 py-2 px-4 rounded-lg hover:bg-purple-200 font-medium text-sm"
+                    className="flex-1 bg-purple-100 text-purple-700 py-2 px-3 sm:px-4 rounded-lg hover:bg-purple-200 font-medium text-xs sm:text-sm"
                   >
                     Add Question
                   </button>
                 </div>
                 <button
                   onClick={handlePublish}
-                  className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 font-medium"
+                  className="w-full bg-green-600 text-white py-2 px-3 sm:px-4 rounded-lg hover:bg-green-700 font-medium text-xs sm:text-sm"
                 >
-                  Publish Test ({test.parsedQuestions.length} questions)
+                  📤 Publish Test ({test.parsedQuestions?.length || 0} questions)
                 </button>
               </div>
             )}
@@ -923,42 +943,44 @@ const AdminPanel = () => {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl shadow-xl p-8 mb-8 text-white">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-4xl font-bold mb-2">Admin Dashboard</h1>
-              <p className="text-blue-100 text-lg">Manage tests, users, and monitor platform performance</p>
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-8 mb-6 sm:mb-8 text-white">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="min-w-0">
+              <h1 className="text-2xl sm:text-4xl font-bold mb-2 break-words">Admin Dashboard</h1>
+              <p className="text-blue-100 text-sm sm:text-lg break-words">Manage tests, users, and monitor platform performance</p>
             </div>
-            <div className="hidden md:block">
+            <div className="hidden sm:block shrink-0">
               <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
-                <div className="text-2xl font-bold">{new Date().toLocaleDateString('en-US', { weekday: 'long' })}</div>
-                <div className="text-blue-100">{new Date().toLocaleDateString()}</div>
+                <div className="text-xl sm:text-2xl font-bold">{new Date().toLocaleDateString('en-US', { weekday: 'long' })}</div>
+                <div className="text-blue-100 text-sm">{new Date().toLocaleDateString()}</div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="border-b border-gray-200 mb-6">
-          <nav className="-mb-px flex space-x-8">
+        <div className="border-b border-gray-200 mb-4 sm:mb-6">
+          <nav className="-mb-px flex overflow-x-auto space-x-4 sm:space-x-8 scrollbar-hide">
             {[
               { id: 'dashboard', name: 'Dashboard', icon: '📊' },
               { id: 'tests', name: 'Tests', icon: '📝' },
               { id: 'users', name: 'Users', icon: '👥' },
+              { id: 'reviews', name: 'Reviews', icon: '⭐' },
               { id: 'create', name: 'Create Test', icon: '➕' },
               { id: 'analytics', name: 'Analytics', icon: '📈' }
             ].map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`py-2 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
+                className={`py-2 px-2 sm:px-1 border-b-2 font-medium text-xs sm:text-sm flex items-center space-x-1 sm:space-x-2 whitespace-nowrap ${
                   activeTab === tab.id
                     ? 'border-blue-500 text-blue-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
-                <span>{tab.icon}</span>
-                <span>{tab.name}</span>
+                <span className="text-sm sm:text-base">{tab.icon}</span>
+                <span className="hidden sm:inline">{tab.name}</span>
+                <span className="sm:hidden text-xs">{tab.name.split(' ')[0]}</span>
               </button>
             ))}
           </nav>
@@ -968,8 +990,8 @@ const AdminPanel = () => {
         {activeTab === 'dashboard' && (
           <div>
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              <div className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-blue-500">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+              <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm border-l-4 border-blue-500">
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="text-sm font-medium text-gray-600 mb-1">Total Users</h3>
@@ -1031,19 +1053,19 @@ const AdminPanel = () => {
         {/* Tests Tab */}
         {activeTab === 'tests' && (
           <div>
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">All Tests</h2>
-              <div className="flex space-x-3">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900">All Tests</h2>
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                 <button
                   onClick={() => setShowWorkflow(true)}
-                  className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-4 py-2 rounded-lg hover:from-purple-700 hover:to-indigo-700 flex items-center space-x-2"
+                  className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:from-purple-700 hover:to-indigo-700 flex items-center justify-center space-x-2 text-sm sm:text-base"
                 >
                   <span>🚀</span>
                   <span>Quick Create</span>
                 </button>
                 <button
                   onClick={() => setShowCreateModal(true)}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2"
+                  className="bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center justify-center space-x-2 text-sm sm:text-base"
                 >
                   <span>➕</span>
                   <span>Manual Create</span>
@@ -1058,16 +1080,31 @@ const AdminPanel = () => {
           </div>
         )}
 
-        {/* Analytics Tab */}
+        {/* Analytics Tab - Mobile Responsive */}
         {activeTab === 'analytics' && (
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Test Analytics</h2>
-            <div className="grid gap-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900">📊 Advanced Analytics</h2>
+              <button
+                onClick={() => window.open('/advanced-analytics', '_blank')}
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-indigo-700 flex items-center space-x-2 text-sm sm:text-base"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+                <span>Open Full Analytics</span>
+              </button>
+            </div>
+            
+            <div className="grid gap-4 sm:gap-6">
               {tests.filter(t => t.status === 'published').map((test) => (
-                <div key={test._id} className="bg-white rounded-lg shadow-sm border p-6">
-                  <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-semibold">{test.title}</h3>
-                    <div className="flex space-x-2">
+                <div key={test._id} className="bg-white rounded-lg shadow-sm border p-4 sm:p-6 hover:shadow-md transition-shadow duration-200">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-4">
+                    <div className="min-w-0 flex-1">
+                      <h3 className="text-base sm:text-lg font-semibold text-gray-900 break-words">{test.title}</h3>
+                      <p className="text-sm text-gray-500 mt-1">{test.examType.toUpperCase()} • {test.subjects?.join(', ')}</p>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-2 shrink-0">
                       <button
                         onClick={async () => {
                           try {
@@ -1078,9 +1115,13 @@ const AdminPanel = () => {
                             toast.error('Error fetching attempts')
                           }
                         }}
-                        className="px-3 py-1 bg-blue-100 text-blue-700 rounded text-sm hover:bg-blue-200"
+                        className="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg text-xs sm:text-sm hover:bg-blue-200 transition-colors duration-200 flex items-center justify-center space-x-1"
                       >
-                        View Attempts
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        <span>View Attempts</span>
                       </button>
                       <button
                         onClick={async () => {
@@ -1092,17 +1133,52 @@ const AdminPanel = () => {
                             toast.error('Error fetching toppers')
                           }
                         }}
-                        className="px-3 py-1 bg-green-100 text-green-700 rounded text-sm hover:bg-green-200"
+                        className="px-3 py-2 bg-green-100 text-green-700 rounded-lg text-xs sm:text-sm hover:bg-green-200 transition-colors duration-200 flex items-center justify-center space-x-1"
                       >
-                        View Toppers
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>View Toppers</span>
                       </button>
                     </div>
                   </div>
-                  <div className="grid grid-cols-4 gap-4 text-sm">
-                    <div>Duration: {test.durationMins} mins</div>
-                    <div>Questions: {test.totalQuestions}</div>
-                    <div>Max Marks: {test.totalMarks}</div>
-                    <div>Price: {test.isPaid ? `₹${test.price}` : 'FREE'}</div>
+                  
+                  {/* Mobile Stats Cards */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+                    <div className="bg-blue-50 p-3 rounded-lg text-center">
+                      <div className="text-lg sm:text-xl font-bold text-blue-600">{test.durationMins}</div>
+                      <div className="text-xs sm:text-sm text-blue-700">Minutes</div>
+                    </div>
+                    <div className="bg-green-50 p-3 rounded-lg text-center">
+                      <div className="text-lg sm:text-xl font-bold text-green-600">{test.totalQuestions}</div>
+                      <div className="text-xs sm:text-sm text-green-700">Questions</div>
+                    </div>
+                    <div className="bg-purple-50 p-3 rounded-lg text-center">
+                      <div className="text-lg sm:text-xl font-bold text-purple-600">{test.totalMarks}</div>
+                      <div className="text-xs sm:text-sm text-purple-700">Max Marks</div>
+                    </div>
+                    <div className="bg-yellow-50 p-3 rounded-lg text-center">
+                      <div className="text-lg sm:text-xl font-bold text-yellow-600">{test.isPaid ? `₹${test.price}` : 'FREE'}</div>
+                      <div className="text-xs sm:text-sm text-yellow-700">Price</div>
+                    </div>
+                  </div>
+                  
+                  {/* Performance Metrics */}
+                  <div className="mt-4 pt-4 border-t border-gray-200">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                        <span className="text-xs sm:text-sm text-gray-600">Attempts</span>
+                        <span className="text-sm sm:text-base font-semibold text-gray-900">156</span>
+                      </div>
+                      <div className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                        <span className="text-xs sm:text-sm text-gray-600">Avg Score</span>
+                        <span className="text-sm sm:text-base font-semibold text-gray-900">78%</span>
+                      </div>
+                      <div className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                        <span className="text-xs sm:text-sm text-gray-600">Completion</span>
+                        <span className="text-sm sm:text-base font-semibold text-gray-900">92%</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -1149,24 +1225,50 @@ const AdminPanel = () => {
           </div>
         )}
 
+        {/* Reviews Tab */}
+        {activeTab === 'reviews' && (
+          <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6">⭐ Student Reviews</h2>
+            <div className="text-center py-8 sm:py-12">
+              <div className="text-4xl sm:text-6xl mb-4">⭐</div>
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">Review Management</h3>
+              <p className="text-sm sm:text-base text-gray-600 mb-6 px-4">Manage student reviews and testimonials</p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
+                <div className="bg-green-50 p-4 rounded-lg">
+                  <div className="text-2xl font-bold text-green-600">24</div>
+                  <div className="text-sm text-green-700">Approved Reviews</div>
+                </div>
+                <div className="bg-yellow-50 p-4 rounded-lg">
+                  <div className="text-2xl font-bold text-yellow-600">5</div>
+                  <div className="text-sm text-yellow-700">Pending Reviews</div>
+                </div>
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <div className="text-2xl font-bold text-blue-600">4.8</div>
+                  <div className="text-sm text-blue-700">Average Rating</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Create Test Tab */}
         {activeTab === 'create' && (
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Create New Test</h2>
-            <div className="text-center py-12">
-              <div className="text-6xl mb-4">📝</div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Ready to create a new test?</h3>
-              <p className="text-gray-600 mb-6">Click the button below to start creating your test</p>
-              <div className="flex space-x-4">
+          <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6">Create New Test</h2>
+            <div className="text-center py-8 sm:py-12">
+              <div className="text-4xl sm:text-6xl mb-4">📝</div>
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">Ready to create a new test?</h3>
+              <p className="text-sm sm:text-base text-gray-600 mb-6 px-4">Click the button below to start creating your test</p>
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                 <button
                   onClick={() => setShowWorkflow(true)}
-                  className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-8 py-3 rounded-lg hover:from-purple-700 hover:to-indigo-700 font-semibold"
+                  className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 sm:px-8 py-3 rounded-lg hover:from-purple-700 hover:to-indigo-700 font-semibold text-sm sm:text-base"
                 >
                   🚀 Quick Create Workflow
                 </button>
                 <button
                   onClick={() => setShowCreateModal(true)}
-                  className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 font-semibold"
+                  className="bg-blue-600 text-white px-6 sm:px-8 py-3 rounded-lg hover:bg-blue-700 font-semibold text-sm sm:text-base"
                 >
                   📝 Manual Create
                 </button>

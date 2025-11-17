@@ -47,6 +47,10 @@
   
   .gradient-text {
     @apply bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent font-bold;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 200%;
+    animation: gradientShift 3s ease infinite;
   }
   
   .hero-gradient {
@@ -205,4 +209,199 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, #5a67d8, #6b46c1);
+}
+
+/* Mobile-specific utilities */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Enhanced Mobile Responsiveness */
+@media (max-width: 640px) {
+  .hero-section {
+    min-height: 100vh;
+    padding-top: 4rem;
+  }
+  
+  .mobile-hero-text {
+    font-size: clamp(1.75rem, 8vw, 2.5rem);
+    line-height: 1.2;
+  }
+  
+  .mobile-hero-subtitle {
+    font-size: clamp(2rem, 10vw, 3rem);
+    line-height: 1.1;
+  }
+  
+  .mobile-cta-container {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+  
+  .mobile-stats {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+  
+  .mobile-stat-item {
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+}
+
+/* Mobile touch improvements */
+@media (max-width: 768px) {
+  .card {
+    @apply shadow-lg hover:shadow-xl;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+  
+  .btn-primary, .btn-secondary, .btn-accent {
+    @apply py-3 px-6 text-base font-semibold;
+    min-height: 48px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .input-field {
+    @apply py-3 px-4 text-base;
+    min-height: 48px;
+    touch-action: manipulation;
+  }
+  
+  /* Improve touch targets */
+  .mobile-touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Better spacing on mobile */
+  .mobile-section {
+    @apply py-12 px-4;
+  }
+  
+  .mobile-container {
+    @apply max-w-full mx-auto px-4;
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .tablet-grid {
+    @apply grid-cols-2 gap-6;
+  }
+  
+  .tablet-text {
+    @apply text-lg;
+  }
+}
+
+/* Mobile-first responsive text */
+.responsive-text {
+  @apply text-sm sm:text-base md:text-lg;
+}
+
+.responsive-heading {
+  @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl;
+}
+
+.responsive-hero-heading {
+  @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl;
+  line-height: 1.1;
+}
+
+.responsive-subheading {
+  @apply text-lg sm:text-xl md:text-2xl;
+}
+
+/* Mobile card improvements */
+.mobile-card {
+  @apply bg-white rounded-xl shadow-lg p-4 sm:p-6 border border-gray-100 hover:shadow-xl transition-all duration-300;
+  transform: translateZ(0);
+}
+
+.mobile-card:hover {
+  transform: translateY(-4px) translateZ(0);
+}
+
+/* Mobile button improvements */
+.mobile-btn {
+  @apply px-4 py-3 rounded-lg font-medium text-sm sm:text-base transition-all duration-200 min-h-[48px] flex items-center justify-center;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Enhanced gradient text for mobile */
+.mobile-gradient-text {
+  @apply bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent font-bold;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Mobile-optimized animations */
+@media (prefers-reduced-motion: no-preference) {
+  .mobile-animate-fade {
+    animation: mobileSlideUp 0.6s ease-out;
+  }
+  
+  .mobile-animate-scale {
+    animation: mobileScale 0.3s ease-out;
+  }
+}
+
+@keyframes mobileSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes mobileScale {
+  from {
+    transform: scale(0.95);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* Mobile-specific hover states */
+@media (hover: hover) {
+  .mobile-hover-lift:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) {
+  .mobile-hover-lift:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Safe area handling for mobile devices */
+@supports (padding: max(0px)) {
+  .mobile-safe-area {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+}
+
+/* High DPI display optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .mobile-crisp-edges {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
 }
