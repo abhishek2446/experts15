@@ -3,7 +3,7 @@ const router = express.Router();
 const Package = require('../models/Package');
 const User = require('../models/User');
 const UserProgress = require('../models/UserProgress');
-const auth = require('../middleware/auth');
+const { auth } = require('../middleware/auth');
 
 // Get all packages
 router.get('/', async (req, res) => {
