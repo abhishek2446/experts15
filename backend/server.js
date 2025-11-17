@@ -92,6 +92,21 @@ app.get('/health', (req, res) => {
   });
 });
 
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'Experts15 Backend API',
+    status: 'Running',
+    version: '1.0.0',
+    endpoints: {
+      health: '/health',
+      api: '/api',
+      auth: '/api/auth',
+      tests: '/api/tests'
+    }
+  });
+});
+
 // API root endpoint
 app.get('/api', (req, res) => {
   res.json({ 
