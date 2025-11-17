@@ -20,6 +20,8 @@ const cbtRoutes = require('./routes/cbt.routes');
 const demoRoutes = require('./routes/demo.routes');
 const reviewRoutes = require('./routes/reviews.routes');
 const profileRoutes = require('./routes/profile.routes');
+const packageRoutes = require('./routes/packages.routes');
+const progressRoutes = require('./routes/progress.routes');
 
 const app = express();
 
@@ -77,6 +79,8 @@ app.use('/api/cbt', cbtRoutes);
 app.use('/api/demo', demoRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/profile', profileRoutes);
+app.use('/api/packages', packageRoutes);
+app.use('/api/progress', progressRoutes);
 
 // Health check
 app.get('/health', (req, res) => {

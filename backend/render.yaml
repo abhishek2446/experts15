@@ -2,6 +2,7 @@ services:
   - type: web
     name: experts15-backend
     env: node
+    plan: free
     buildCommand: npm install
     startCommand: npm start
     envVars:

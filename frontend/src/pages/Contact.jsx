@@ -37,7 +37,7 @@ const Contact = () => {
         </svg>
       ),
       title: "Email Us",
-      details: ["support@experts15.in", "admissions@experts15.in"],
+      details: ["experts15.in@gmail.com"],
       description: "Get in touch via email for any queries"
     },
     {
@@ -47,7 +47,7 @@ const Contact = () => {
         </svg>
       ),
       title: "Call Us",
-      details: ["+91 85289 43187 (Ankit Sir)", "+91 77528 42084 (Abhishek Sir)"],
+      details: ["+91 85289 43187 ", "+91 77528 42084"],
       description: "Available Mon-Sat, 9 AM - 8 PM"
     },
     {

@@ -6,30 +6,30 @@ const About = () => {
     window.scrollTo(0, 0)
   }, [])
 
-  const teamMembers = [
-    {
-      name: "Ankit Kumar",
-      role: "Founder & Physics/Chemistry Expert",
-      education: "Expert in Physics & Chemistry",
-      contact: "+91 85289 43187",
-      image: "/api/placeholder/300/300",
-      description: "Passionate educator with deep expertise in Physics and Chemistry, dedicated to helping students excel in JEE"
-    },
-    {
-      name: "Abhishek Shukla",
-      role: "Co-Founder & Mathematics Expert",
-      education: "Expert in Mathematics",
-      contact: "+91 77528 42084",
-      image: "/api/placeholder/300/300",
-      description: "Mathematics specialist with proven track record in helping students master complex mathematical concepts"
-    }
-  ]
+  // const teamMembers = [
+  //   {
+  //     name: "Ankit Kumar",
+  //     role: "Founder & Physics/Chemistry Expert",
+  //     education: "Expert in Physics & Chemistry",
+  //     contact: "+91 85289 43187",
+  //     image: "/api/placeholder/300/300",
+  //     description: "Passionate educator with deep expertise in Physics and Chemistry, dedicated to helping students excel in JEE"
+  //   },
+  //   {
+  //     name: "Abhishek Shukla",
+  //     role: "Co-Founder & Mathematics Expert",
+  //     education: "Expert in Mathematics",
+  //     contact: "+91 77528 42084",
+  //     image: "/api/placeholder/300/300",
+  //     description: "Mathematics specialist with proven track record in helping students master complex mathematical concepts"
+  //   }
+  // ]
 
   const achievements = [
-    { number: "50,000+", label: "Students Trained", icon: "👨‍🎓" },
-    { number: "98.5%", label: "Success Rate", icon: "🎯" },
-    { number: "15,000+", label: "Questions Bank", icon: "📚" },
-    { number: "500+", label: "IIT Selections", icon: "🏆" }
+    { number: "5000+", label: "Students Trained", icon: "👨‍🎓" },
+    { number: "90.5%", label: "Success Rate", icon: "🎯" },
+    { number: "1500+", label: "Questions Bank", icon: "📚" },
+    { number: "50+", label: "IIT Selections", icon: "🏆" }
   ]
 
   return (
@@ -126,22 +126,7 @@ const About = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
-            {teamMembers.map((member, index) => (
-              <div key={index} className="card p-8 text-center hover:scale-105 transition-transform duration-300 bg-gradient-to-br from-white to-blue-50">
-                <div className="w-32 h-32 rounded-full mx-auto mb-6 bg-gradient-to-br from-blue-100 to-indigo-200 flex items-center justify-center border-4 border-white shadow-lg">
-                  <div className="text-4xl font-bold text-blue-600">{member.name.split(' ').map(n => n[0]).join('')}</div>
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">{member.name}</h3>
-                <p className="text-blue-600 font-semibold mb-2 text-lg">{member.role}</p>
-                <p className="text-sm text-gray-500 mb-2">{member.education}</p>
-                <div className="bg-blue-50 rounded-lg p-3 mb-4">
-                  <p className="text-blue-700 font-semibold text-sm">📞 {member.contact}</p>
-                </div>
-                <p className="text-gray-600 leading-relaxed">{member.description}</p>
-              </div>
-            ))}
-          </div>
+          
         </div>
       </div>
 
@@ -174,7 +159,7 @@ const About = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900">Founded Experts15</h4>
-                  <p className="text-gray-600">Launched by Ankit Kumar & Abhishek Shukla</p>
+                  
                 </div>
               </div>
               <div className="flex items-start">
@@ -182,8 +167,8 @@ const About = () => {
                   <span className="font-bold">2020</span>
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-900">Platform Development</h4>
-                  <p className="text-gray-600">Built by abhinova.com with advanced features</p>
+                  
+                 
                 </div>
               </div>
               <div className="flex items-start">

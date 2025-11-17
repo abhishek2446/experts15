@@ -8,10 +8,10 @@ const Landing = () => {
   const [tests, setTests] = useState([])
   const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState({
-    students: 50000,
-    successRate: 98.5,
-    questions: 15000,
-    selections: 500
+    students: 5000,
+    successRate: 90.5,
+    questions: 1500,
+    selections: 50
   })
 
   // Fallback data in case API fails
@@ -34,7 +34,7 @@ const Landing = () => {
       durationMins: 180,
       totalMarks: 300,
       isPaid: true,
-      price: 299
+      price: 499
     },
     {
       _id: 'demo-3',
@@ -117,15 +117,15 @@ const Landing = () => {
               <div className="flex flex-wrap justify-center lg:justify-start items-center gap-4 sm:gap-6 lg:gap-8 text-xs sm:text-sm text-gray-300">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                  <span className="whitespace-nowrap">50,000+ Students</span>
+                  <span className="whitespace-nowrap">5,000+ Students</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-                  <span className="whitespace-nowrap">98.5% Success</span>
+                  <span className="whitespace-nowrap">90.5% Success</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
-                  <span className="whitespace-nowrap">15,000+ Questions</span>
+                  <span className="whitespace-nowrap">1500+ Questions</span>
                 </div>
               </div>
             </div>
@@ -139,19 +139,19 @@ const Landing = () => {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-white/10 rounded-lg p-4 text-center hover:bg-white/20 transition-all duration-300">
-                      <div className="text-2xl lg:text-3xl font-bold text-blue-400 mb-1">50K+</div>
+                      <div className="text-2xl lg:text-3xl font-bold text-blue-400 mb-1">5K+</div>
                       <div className="text-xs lg:text-sm text-gray-300">Students</div>
                     </div>
                     <div className="bg-white/10 rounded-lg p-4 text-center hover:bg-white/20 transition-all duration-300">
-                      <div className="text-2xl lg:text-3xl font-bold text-green-400 mb-1">98.5%</div>
+                      <div className="text-2xl lg:text-3xl font-bold text-green-400 mb-1">90.5%</div>
                       <div className="text-xs lg:text-sm text-gray-300">Success</div>
                     </div>
                     <div className="bg-white/10 rounded-lg p-4 text-center hover:bg-white/20 transition-all duration-300">
-                      <div className="text-2xl lg:text-3xl font-bold text-purple-400 mb-1">15K+</div>
+                      <div className="text-2xl lg:text-3xl font-bold text-purple-400 mb-1">1.5K+</div>
                       <div className="text-xs lg:text-sm text-gray-300">Questions</div>
                     </div>
                     <div className="bg-white/10 rounded-lg p-4 text-center hover:bg-white/20 transition-all duration-300">
-                      <div className="text-2xl lg:text-3xl font-bold text-yellow-400 mb-1">500+</div>
+                      <div className="text-2xl lg:text-3xl font-bold text-yellow-400 mb-1">50+</div>
                       <div className="text-xs lg:text-sm text-gray-300">IIT Selections</div>
                     </div>
                   </div>
@@ -391,7 +391,7 @@ const Landing = () => {
                 RG
               </div>
               <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Rohit Gupta</h3>
-              <p className="text-indigo-600 font-semibold mb-4">IIT Delhi, 2024</p>
+              <p className="text-indigo-600 font-semibold mb-4">NIT Delhi, 2024</p>
               <p className="text-sm sm:text-base text-gray-600 italic leading-relaxed">
                 "Experts15's realistic mock tests and detailed analytics helped me identify my weak areas. The expert guidance from Ankit Sir and Abhishek Sir was invaluable!"
               </p>
@@ -405,7 +405,7 @@ const Landing = () => {
                 AS
               </div>
               <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Ananya Singh</h3>
-              <p className="text-indigo-600 font-semibold mb-4">IIT Bombay, 2024</p>
+              <p className="text-indigo-600 font-semibold mb-4">IIIT Prayagraj, 2024</p>
               <p className="text-sm sm:text-base text-gray-600 italic leading-relaxed">
                 "The platform's user-friendly interface and comprehensive question bank made my preparation smooth. Special thanks to the founders for their personal attention!"
               </p>
@@ -419,7 +419,7 @@ const Landing = () => {
                 VK
               </div>
               <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Vikash Kumar</h3>
-              <p className="text-indigo-600 font-semibold mb-4">IIT Kanpur, 2024</p>
+              <p className="text-indigo-600 font-semibold mb-4">IIIT Kashmir, 2024</p>
               <p className="text-sm sm:text-base text-gray-600 italic leading-relaxed">
                 "Amazing platform with excellent mock tests. The instant results and performance analysis helped me track my progress effectively. Highly recommended!"
               </p>
@@ -460,33 +460,15 @@ const Landing = () => {
               </p>
             </div>
             
-            <div>
-              <h4 className="text-lg font-bold mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-gray-400 text-sm sm:text-base">
-                <li><Link to="/" className="hover:text-white transition-colors">Home</Link></li>
-                <li><Link to="/tests" className="hover:text-white transition-colors">Tests</Link></li>
-                <li><Link to="/about" className="hover:text-white transition-colors">About</Link></li>
-                <li><Link to="/contact" className="hover:text-white transition-colors">Contact</Link></li>
-                <li><Link to="/login" className="hover:text-white transition-colors">Login</Link></li>
-              </ul>
-            </div>
             
-            <div>
-              <h4 className="text-lg font-bold mb-4">Support</h4>
-              <ul className="space-y-2 text-gray-400 text-sm sm:text-base">
-                <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Refund Policy</a></li>
-              </ul>
-            </div>
+          
             
             <div>
               <h4 className="text-lg font-bold mb-4">Contact Info</h4>
               <div className="text-gray-400 space-y-2 text-sm sm:text-base">
-                <p>📧 support@experts15.in</p>
+                <p>📧 experts15.in@gmail.com</p>
                 <p>📞 +91 85289 43187</p>
-                <p>📍 New Delhi, India</p>
+                <p>📍 Prayagraj, India</p>
                 <div className="flex space-x-4 mt-4">
                   <a href="#" className="text-gray-400 hover:text-white transition-colors">
                     <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -504,7 +486,7 @@ const Landing = () => {
           </div>
           
           <div className="border-t border-gray-800 mt-8 sm:mt-12 pt-6 sm:pt-8 text-center text-gray-400 text-sm sm:text-base">
-            <p>&copy; 2025 Experts15. All rights reserved. Made with ❤️ for JEE aspirants by <a href="https://abhinova.com" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 transition-colors font-semibold">abhinova.com</a></p>
+            <p>&copy; 2024 Experts15. All rights reserved.</p>
           </div>
         </div>
       </footer>

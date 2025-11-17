@@ -12,14 +12,17 @@ import Signup from './pages/Signup'
 import Login from './pages/Login'
 import ForgotPassword from './pages/ForgotPassword'
 import Dashboard from './pages/Dashboard'
+import EnhancedDashboard from './pages/EnhancedDashboard'
 import TestPlayer from './pages/TestPlayer'
 import TestInstructions from './pages/TestInstructions'
 import CBTInterface from './pages/CBTInterface'
 import TestResult from './pages/TestResult'
 import TestReview from './pages/TestReview'
 import AdminPanel from './pages/AdminPanel'
+import AdminPackages from './pages/AdminPackages'
 import DemoTest from './pages/DemoTest'
 import Subscription from './pages/Subscription'
+import Packages from './pages/Packages'
 import PaymentTest from './pages/PaymentTest'
 import Reviews from './pages/Reviews'
 import Profile from './pages/Profile'
@@ -75,7 +78,15 @@ function App() {
                       path="/dashboard" 
                       element={
                         <ProtectedRoute>
-                          <Dashboard />
+                          <EnhancedDashboard />
+                        </ProtectedRoute>
+                      } 
+                    />
+                    <Route 
+                      path="/packages" 
+                      element={
+                        <ProtectedRoute>
+                          <Packages />
                         </ProtectedRoute>
                       } 
                     />
@@ -116,6 +127,14 @@ function App() {
                       element={
                         <ProtectedRoute adminOnly>
                           <AdminPanel />
+                        </ProtectedRoute>
+                      } 
+                    />
+                    <Route 
+                      path="/admin/packages" 
+                      element={
+                        <ProtectedRoute adminOnly>
+                          <AdminPackages />
                         </ProtectedRoute>
                       } 
                     />

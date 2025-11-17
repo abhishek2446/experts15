@@ -6,6 +6,8 @@ const Test = require('../models/Test');
 const Question = require('../models/Question');
 const User = require('../models/User');
 const Enrollment = require('../models/Enrollment');
+const Package = require('../models/Package');
+const UserProgress = require('../models/UserProgress');
 const { parseQuestionPDF, parseAnswerKeyPDF } = require('../utils/pdfParser');
 
 const router = express.Router();
@@ -627,15 +629,152 @@ router.post('/debug/test-creation', adminAuth, async (req, res) => {
   }
 });
 
-// GET /api/admin/analytics - Basic analytics
+// Package Management Routes
+
+// GET /api/admin/packages - List all packages
+router.get('/packages', adminAuth, async (req, res) => {
+  try {
+    const packages = await Package.find()
+      .populate('mockTests.test', 'title description durationMins totalMarks')
+      .sort({ price: 1 });
+    res.json(packages);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// POST /api/admin/packages - Create package
+router.post('/packages', adminAuth, async (req, res) => {
+  try {
+    const package = new Package(req.body);
+    await package.save();
+    res.status(201).json({ message: 'Package created successfully', package });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// PUT /api/admin/packages/:id - Update package
+router.put('/packages/:id', adminAuth, async (req, res) => {
+  try {
+    const package = await Package.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!package) {
+      return res.status(404).json({ error: 'Package not found' });
+    }
+    res.json({ message: 'Package updated successfully', package });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// POST /api/admin/packages/:id/add-test - Add test to package
+router.post('/packages/:id/add-test', adminAuth, async (req, res) => {
+  try {
+    const { testId, scheduledDate } = req.body;
+    const package = await Package.findById(req.params.id);
+    
+    if (!package) {
+      return res.status(404).json({ error: 'Package not found' });
+    }
+
+    const test = await Test.findById(testId);
+    if (!test) {
+      return res.status(404).json({ error: 'Test not found' });
+    }
+
+    package.mockTests.push({
+      test: testId,
+      scheduledDate: new Date(scheduledDate),
+      isActive: true
+    });
+
+    await package.save();
+    res.json({ message: 'Test added to package successfully', package });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// POST /api/admin/packages/:id/add-quiz - Add quiz to package
+router.post('/packages/:id/add-quiz', adminAuth, async (req, res) => {
+  try {
+    const { title, questions, timeLimit } = req.body;
+    const package = await Package.findById(req.params.id);
+    
+    if (!package) {
+      return res.status(404).json({ error: 'Package not found' });
+    }
+
+    package.quizzes.push({
+      title,
+      questions,
+      timeLimit,
+      isActive: true
+    });
+
+    await package.save();
+    res.json({ message: 'Quiz added to package successfully', package });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// POST /api/admin/packages/:id/add-task - Add daily task to package
+router.post('/packages/:id/add-task', adminAuth, async (req, res) => {
+  try {
+    const { title, description, type } = req.body;
+    const package = await Package.findById(req.params.id);
+    
+    if (!package) {
+      return res.status(404).json({ error: 'Package not found' });
+    }
+
+    package.dailyTasks.push({
+      title,
+      description,
+      type,
+      isActive: true
+    });
+
+    await package.save();
+    res.json({ message: 'Daily task added to package successfully', package });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// GET /api/admin/users/:id/progress - Get user progress
+router.get('/users/:id/progress', adminAuth, async (req, res) => {
+  try {
+    const userProgress = await UserProgress.findOne({ user: req.params.id })
+      .populate('user', 'name email')
+      .populate('package', 'name type');
+    
+    if (!userProgress) {
+      return res.status(404).json({ error: 'User progress not found' });
+    }
+
+    res.json(userProgress);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// GET /api/admin/analytics - Enhanced analytics
 router.get('/analytics', adminAuth, async (req, res) => {
   try {
     const totalUsers = await User.countDocuments({ role: 'student' });
     const totalTests = await Test.countDocuments();
     const publishedTests = await Test.countDocuments({ status: 'published' });
     const totalEnrollments = await Enrollment.countDocuments();
+    const totalPackages = await Package.countDocuments();
+    const activeSubscriptions = await User.countDocuments({ 'subscription.active': true });
 
-    // Revenue calculation (sum of paid enrollments)
+    // Revenue calculation
     const paidEnrollments = await Enrollment.aggregate([
       {
         $lookup: {
@@ -662,14 +801,46 @@ router.get('/analytics', adminAuth, async (req, res) => {
       }
     ]);
 
-    const revenue = paidEnrollments.length > 0 ? paidEnrollments[0].totalRevenue : 0;
+    // Package revenue
+    const packageRevenue = await User.aggregate([
+      {
+        $match: {
+          'subscription.active': true
+        }
+      },
+      {
+        $lookup: {
+          from: 'packages',
+          localField: 'subscription.package',
+          foreignField: '_id',
+          as: 'package'
+        }
+      },
+      {
+        $unwind: '$package'
+      },
+      {
+        $group: {
+          _id: null,
+          totalRevenue: { $sum: '$package.price' },
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    const testRevenue = paidEnrollments.length > 0 ? paidEnrollments[0].totalRevenue : 0;
+    const subscriptionRevenue = packageRevenue.length > 0 ? packageRevenue[0].totalRevenue : 0;
 
     res.json({
       totalUsers,
       totalTests,
       publishedTests,
       totalEnrollments,
-      totalRevenue: revenue,
+      totalPackages,
+      activeSubscriptions,
+      totalRevenue: testRevenue + subscriptionRevenue,
+      testRevenue,
+      subscriptionRevenue,
       paidEnrollments: paidEnrollments.length > 0 ? paidEnrollments[0].count : 0
     });
   } catch (error) {

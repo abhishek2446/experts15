@@ -34,7 +34,7 @@ const Tests = () => {
       durationMins: 180,
       totalMarks: 300,
       isPaid: true,
-      price: 299,
+      price: 499,
       questionCount: 54,
       difficulty: 'Hard'
     },

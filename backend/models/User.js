@@ -49,18 +49,52 @@ const userSchema = new mongoose.Schema({
       type: Boolean,
       default: false
     },
+    package: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Package'
+    },
     plan: {
       type: String,
       enum: ['free', 'premium', 'ultimate'],
       default: 'free'
     },
     startDate: Date,
-    expiryDate: Date
+    expiryDate: Date,
+    autoRenew: {
+      type: Boolean,
+      default: false
+    }
   },
-  studyStreak: {
-    current: { type: Number, default: 0 },
-    longest: { type: Number, default: 0 },
-    lastActiveDate: Date
+  progress: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'UserProgress'
+  },
+  lastLoginDate: Date,
+  totalStudyTime: {
+    type: Number,
+    default: 0
+  }
+},
+  preferences: {
+    notifications: {
+      email: {
+        type: Boolean,
+        default: true
+      },
+      dailyReminder: {
+        type: Boolean,
+        default: true
+      },
+      testReminder: {
+        type: Boolean,
+        default: true
+      }
+    },
+    theme: {
+      type: String,
+      enum: ['light', 'dark'],
+      default: 'light'
+    }
   }
 }, {
   timestamps: true
