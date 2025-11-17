@@ -20,20 +20,20 @@ router.get('/', async (req, res) => {
 // Subscribe to package
 router.post('/:packageId/subscribe', auth, async (req, res) => {
   try {
-    const package = await Package.findById(req.params.packageId);
-    if (!package) {
+    const packageDoc = await Package.findById(req.params.packageId);
+    if (!packageDoc) {
       return res.status(404).json({ error: 'Package not found' });
     }
 
     const user = await User.findById(req.user.id);
     const expiryDate = new Date();
-    expiryDate.setDate(expiryDate.getDate() + package.duration);
+    expiryDate.setDate(expiryDate.getDate() + packageDoc.duration);
 
     // Update user subscription
     user.subscription = {
       active: true,
-      package: package._id,
-      plan: package.type,
+      package: packageDoc._id,
+      plan: packageDoc.type,
       startDate: new Date(),
       expiryDate: expiryDate,
       autoRenew: req.body.autoRenew || false
@@ -44,12 +44,12 @@ router.post('/:packageId/subscribe', auth, async (req, res) => {
     if (!userProgress) {
       userProgress = new UserProgress({
         user: user._id,
-        package: package._id
+        package: packageDoc._id
       });
       await userProgress.save();
       user.progress = userProgress._id;
     } else {
-      userProgress.package = package._id;
+      userProgress.package = packageDoc._id;
       await userProgress.save();
     }
 
@@ -58,7 +58,7 @@ router.post('/:packageId/subscribe', auth, async (req, res) => {
     res.json({
       message: 'Successfully subscribed to package',
       subscription: user.subscription,
-      package: package
+      package: packageDoc
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
