@@ -32,6 +32,8 @@ const allowedOrigins = [
   'https://experts15.in',
   'https://www.experts15.in',
   'https://experts15.netlify.app',
+  'https://experts15.vercel.app',
+  'https://main--experts15.netlify.app',
   process.env.FRONTEND_URL
 ].filter(Boolean);
 
