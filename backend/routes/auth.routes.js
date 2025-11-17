@@ -129,9 +129,12 @@ router.post('/verify-otp', async (req, res) => {
 // POST /api/auth/login
 router.post('/login', async (req, res) => {
   try {
+    console.log('Login attempt:', { email: req.body.email, hasPassword: !!req.body.password });
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
+    console.log('User found:', !!user, user ? { verified: user.isEmailVerified } : 'No user');
+    
     if (!user || !user.isEmailVerified) {
       return res.status(400).json({ error: 'Invalid credentials or email not verified' });
     }
@@ -161,7 +164,11 @@ router.post('/login', async (req, res) => {
     });
   } catch (error) {
     console.error('Login error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ 
+      error: 'Internal server error',
+      message: error.message,
+      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 });
 

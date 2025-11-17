@@ -79,7 +79,11 @@ router.get('/tests', adminAuth, async (req, res) => {
     res.json(tests);
   } catch (error) {
     console.error('Get admin tests error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ 
+      error: 'Internal server error',
+      message: error.message,
+      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 });
 

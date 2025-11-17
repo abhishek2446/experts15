@@ -101,8 +101,8 @@ const TestCreationWorkflow = ({ isOpen, onClose, onSuccess }) => {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-hidden">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg w-full max-w-4xl h-full max-h-[95vh] flex flex-col overflow-hidden">
         {/* Header */}
         <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-6">
           <div className="flex justify-between items-center">
@@ -148,7 +148,7 @@ const TestCreationWorkflow = ({ isOpen, onClose, onSuccess }) => {
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto" style={{ maxHeight: 'calc(90vh - 200px)' }}>
+        <div className="flex-1 p-6 overflow-y-auto">
           {/* Step 1: Basic Info */}
           {currentStep === 1 && (
             <div className="space-y-6">
@@ -319,7 +319,7 @@ const TestCreationWorkflow = ({ isOpen, onClose, onSuccess }) => {
         </div>
 
         {/* Footer */}
-        <div className="bg-gray-50 border-t p-4 flex justify-between items-center">
+        <div className="bg-gray-50 border-t p-4 flex justify-between items-center flex-shrink-0">
           <div className="text-sm text-gray-600">
             Step {currentStep} of {steps.length}
           </div>
@@ -341,8 +341,13 @@ const TestCreationWorkflow = ({ isOpen, onClose, onSuccess }) => {
             {currentStep === 1 && (
               <button
                 onClick={handleCreateTest}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                className={`px-6 py-2 rounded-lg font-medium ${
+                  !testData.title || !testData.description
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    : 'bg-blue-600 text-white hover:bg-blue-700'
+                }`}
                 disabled={!testData.title || !testData.description}
+                title={!testData.title || !testData.description ? 'Please fill in title and description' : 'Create test'}
               >
                 Create Test
               </button>
