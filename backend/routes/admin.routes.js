@@ -170,17 +170,24 @@ router.put('/tests/:id', adminAuth, async (req, res) => {
 // POST /api/admin/tests/:id/upload-questions - Upload question PDF
 router.post('/tests/:id/upload-questions', adminAuth, upload.single('questionPdf'), async (req, res) => {
   try {
+    console.log('Upload questions request received for test:', req.params.id);
+    
     const test = await Test.findById(req.params.id);
     if (!test) {
+      console.log('Test not found:', req.params.id);
       return res.status(404).json({ error: 'Test not found' });
     }
 
     if (!req.file) {
+      console.log('No file uploaded');
       return res.status(400).json({ error: 'No PDF file uploaded' });
     }
 
+    console.log('File uploaded:', req.file.filename, 'Size:', req.file.size);
+
     // Parse PDF with enhanced extraction
     const parseResult = await parseQuestionPDF(req.file.path);
+    console.log('Parse result:', parseResult.success, 'Questions:', parseResult.questions?.length);
     
     // Enhance questions with auto-detection
     if (parseResult.success && parseResult.questions) {
@@ -189,6 +196,7 @@ router.post('/tests/:id/upload-questions', adminAuth, upload.single('questionPdf
     }
     
     if (!parseResult.success) {
+      console.log('PDF parsing failed:', parseResult.error);
       return res.status(400).json({ error: 'Failed to parse PDF: ' + parseResult.error });
     }
 
@@ -196,6 +204,8 @@ router.post('/tests/:id/upload-questions', adminAuth, upload.single('questionPdf
     test.questionPdfFileUrl = `/uploads/${req.file.filename}`;
     test.parsedQuestions = parseResult.questions;
     await test.save();
+
+    console.log('Test updated successfully with', parseResult.questions.length, 'questions');
 
     res.json({
       message: 'Questions uploaded and parsed successfully',
@@ -205,7 +215,11 @@ router.post('/tests/:id/upload-questions', adminAuth, upload.single('questionPdf
     });
   } catch (error) {
     console.error('Upload questions error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ 
+      error: 'Internal server error',
+      message: error.message,
+      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 });
 
